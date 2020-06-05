@@ -14,8 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views
+from django.views.generic.base import RedirectView
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+import portfolios.forms
+
+# from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+
+                # path('portfolios/'), include('portfolios.urls', namespace='portfolios'),
+                path('portfolios/', include('portfolios.urls')),
+                # path('portfolios/', views.gallery, name='gallery'),
+                # path('<slug>', portfolios.views.AlbumDetail.as_view(), name='album'),
+                path('accounts/login/', views.LoginView, name='login'),
+                path('logout', views.LogoutView, {'next_page': '/', }, name='logout'),
+                path('admin/', admin.site.urls),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
+
